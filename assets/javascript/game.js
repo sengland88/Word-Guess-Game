@@ -1,67 +1,99 @@
-var tvShows = ["Charmed" , "Heroes" , "Pokemon" , "Roseanne"]
+var tvShows = ["Charmed" , "Heroes" , "Pokemon" , "Roseanne" ,]
 
-// const maxTries = 10
-
-var guessedLetters = [];
-var letterCount = theWord
-var guessingWord = [];
-var remainingGuesses = 0;
-var gameStart = false;
-var gameFinished = false;
 var wins = 0;
+var losses = 0;
+var theAnswer = [];
+var remainingGuess = 12;
+var lettersGuessed = [];
 
 var theWord = tvShows[Math.floor(Math.random() * tvShows.length)].toLowerCase()
+console.log(theWord)
 
-var wordLength = theWord.length
+theAnswer = theDashes(theWord)
+document.querySelector("#display_area").innerHTML = theAnswer.join(" ")
 
-var dashes = theDashes(theWord)
-
-console.log(`there should be ${dashes.join(" ")} displayed`)
-document.getElementById("display_area").innerHTML = dashes.join(" ")
+document.onkeypress = function() {
+    var userGuess = event.key
+    console.log(userGuess)
+    if (theWord.includes(userGuess)) {
+        console.log("right")
+        correctGuess()
+        //trigger wordCheck - this needs to be run each time
+        wordCheck()
+        //trigger youWon
+    
+    } else {
+        console.log("wrong")
+        incorrectGuess()
+    }
+}
 
 function theDashes(word) {
     console.log(`${word} is the word`)
-    // create dashes for each letter in the word
     var theGuesses = [];
-
     for (let i = 0; i < word.length; i++) {
-        // add a dash into the guesses array
         theGuesses.push("_")
     }
-
-    //return an array with those dash in each element
     return theGuesses
-
 };
 
+function correctGuess() {
+    var youGo = event.key;
+    console.log("You go girl!")
+    //take the correct letter and display it in the dashes array
+    // create a for loop and find the index of correct letter guessed
 
-document.onkeypress = function() {
-    var userGuess = String.fromCharCode(event.keyCode).toLowerCase()
-        if (theWord.includes(userGuess)) {
-            console.log("right letter")
-            var guessedLetter = theWord.indexOf(userGuess)
-            console.log(guessedLetter)
-            console.log(dashes)
-
-
-
-
-            
-            
-            
-            
-        } else {
-            console.log("wrong letter")
-            
+    for (let i = 0 ; i < theWord.length ; i++) {
+        if (youGo === theWord[i]) {
+            // replace the dash in the dashes array with the same index with the correct event.key
+            theAnswer[i] = youGo
+            document.querySelector("#display_area").innerHTML = theAnswer.join(" ")
         }
+    }
+}
 
-    
-    
-        
+function incorrectGuess() {
+    var noGo = event.key;
+    console.log("the incorrectGuess function works")
+    remainingGuess--
+    console.log(remainingGuess)
+    document.querySelector("#remainingguess-text").innerHTML = remainingGuess
+    document.querySelector("#lettersguessed-text").innerHTML = lettersGuessed
+    lettersGuessed.push(noGo)
+    console.log(lettersGuessed)
 
-    // when a key is pressed, it will take that key and look into dashes.
+        if (remainingGuess === 0) {
+            alert("you lost")
+            youLost()
+        }
+}
 
-    // if the value is true, replace the dash
+function wordCheck() {
+    // if the dashes array (as a string) matches the original word
+    console.log(theAnswer,theWord)
+    if (theAnswer.join("") === theWord) {
+        alert("Go on with your bad self!")
+        youWon()
+    }    
+}
 
-    // if the value is false, add it to letters guessed
+function reStart() {
+    // theDashes()
+    // theAnswer = theDashes(theWord)
+    remainingGuess = 12;
+    lettersGuessed = [];
+    theGuesses = [];
+    alert("Go ahead and try to guess the new word")
+}
+
+function youWon() {
+    wins++
+    document.querySelector("#wins-text").innerHTML = wins
+    reStart()
+}
+
+function youLost() {
+    losses++
+    document.querySelector("#losses-text").innerHTML = losses
+    reStart()
 }

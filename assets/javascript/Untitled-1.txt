@@ -1,0 +1,35 @@
+function theDashes(word) {
+    console.log(`${word} is the word`)
+    var theGuesses = [];
+    for (let i = 0; i < word.length; i++) {
+        theGuesses.push("_")
+    }
+    return theGuesses
+};
+
+if (remainingGuess = 0) {
+    alert("game over")
+}
+
+document.onkeypress = function() {
+    var userGuess = String.fromCharCode(event.keyCode).toLowerCase()
+    
+    if (theWord.includes(userGuess)) {
+        console.log("right letter")
+        var guessedLetter = theWord.indexOf(userGuess)
+        console.log(guessedLetter)
+        console.log(dashes)
+
+        for (let i = 0 ; i < theWord.length ; i++) {
+            if (theWord.charAt(i).toLowerCase() === userGuess){
+                dashes[i] = userGuess;
+                remainingGuess--;                
+            } 
+        }
+    
+    } else {
+        console.log("wrong letter")
+        remainingGuess--                
+    }   
+    
+}
