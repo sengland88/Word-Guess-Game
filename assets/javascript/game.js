@@ -5,14 +5,15 @@ var losses = 0;
 var theAnswer = [];
 var remainingGuess = 12;
 var lettersGuessed = [];
+var start = true;
 
-var theWord = tvShows[Math.floor(Math.random() * tvShows.length)].toLowerCase()
+var theWord 
 console.log(theWord)
 
-theAnswer = theDashes(theWord)
-document.querySelector("#display_area").innerHTML = theAnswer.join(" ")
+reStart()
 
 document.onkeypress = function() {
+    if (event.keyCode < 97 || event.keyCode > 122) {return false;}
     var userGuess = event.key
     console.log(userGuess)
     if (theWord.includes(userGuess)) {
@@ -20,8 +21,8 @@ document.onkeypress = function() {
         correctGuess()
         //trigger wordCheck - this needs to be run each time
         wordCheck()
-        //trigger youWon
-    
+
+        
     } else {
         console.log("wrong")
         incorrectGuess()
@@ -42,7 +43,7 @@ function correctGuess() {
     console.log("You go girl!")
     //take the correct letter and display it in the dashes array
     // create a for loop and find the index of correct letter guessed
-
+    
     for (let i = 0 ; i < theWord.length ; i++) {
         if (youGo === theWord[i]) {
             // replace the dash in the dashes array with the same index with the correct event.key
@@ -62,19 +63,20 @@ function incorrectGuess() {
     lettersGuessed.push(noGo)
     console.log(lettersGuessed)
 
-        if (remainingGuess === 0) {
-            alert("you lost")
+    if (remainingGuess === 0) {
+        alert("you lost")
             youLost()
         }
-}
+    }
+
 
 function wordCheck() {
-    // if the dashes array (as a string) matches the original word
-    console.log(theAnswer,theWord)
-    if (theAnswer.join("") === theWord) {
-        alert("Go on with your bad self!")
-        youWon()
-    }    
+// if the dashes array (as a string) matches the original word
+console.log(theAnswer,theWord)
+if (theAnswer.join("") === theWord) {
+    alert("Go on with your bad self!")
+    youWon()
+}    
 }
 
 function reStart() {
@@ -83,7 +85,11 @@ function reStart() {
     remainingGuess = 12;
     lettersGuessed = [];
     theGuesses = [];
-    alert("Go ahead and try to guess the new word")
+    if (!start) alert("Go ahead and try to guess the new word")
+    theWord = tvShows[Math.floor(Math.random() * tvShows.length)].toLowerCase()
+    theAnswer = theDashes(theWord)
+    document.querySelector("#display_area").innerHTML = theAnswer.join(" ")
+    start = false;
 }
 
 function youWon() {
